@@ -1,2 +1,2 @@
 all:
-	g++ -Iinclude -Llib -o main src/**.cpp include/glad/glad.c -lglfw3dll
+	g++ -Iinclude -Llib -o main -g src/**.cpp -g src/Window/**.cpp include/glad/glad.c -lglfw3dll
