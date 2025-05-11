@@ -1,4 +1,9 @@
 #include "../include/headers/window/window.h"
+#include "../include/headers/vertexBuffer/vertexBufferObject.h"
+#include "../include/headers/vertexArray/vertexArrayObject.h"
+#include "../include/headers/shader/shader.h"
+
+#include "../include/headers/objects/triangle.h"
 
 #include <iostream>
 
@@ -27,7 +32,6 @@ int Window::createContext() {
 
     if (!window) {
         std::cout << "Could not initialize window" << std::endl;
-        glfwTerminate();
         return -1;
     }
 
@@ -39,9 +43,24 @@ int Window::createContext() {
 }
 
 void Window::start() {
+    GLfloat data[] = {
+        -0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f,
+        0.0f, 0.5f, 0.0f, 1.0f, 1.0f, 1.0f
+    };
+    
+    Triangle t(data);
+
+    VertexBufferObject vbo(data, sizeof(data));
+    VertexArrayObject vao;
+    vao.Bind();
+    vao.LinkAttrib(vbo, 0, 3, GL_FLOAT, 6 * sizeof(float), (void*)0);
+    vao.LinkAttrib(vbo, 1, 3, GL_FLOAT, 6 * sizeof(float), (void*)(3 * sizeof(float)));
+    vao.Unbind();
+    Shader shader("res/shaders/vert.glsl", "res/shaders/frag.glsl");
     while (!glfwWindowShouldClose(this->window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-
+        t.render(vao, shader);
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
