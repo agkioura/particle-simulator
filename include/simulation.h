@@ -16,4 +16,5 @@ class Simulation {
         void updateParticles(float dt);
         void resolveCollisions(Particle &p1, Particle &p2);
         void renderParticles();
+        void explode(int mouseX, int mouseY);
 };

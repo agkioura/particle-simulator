@@ -11,9 +11,12 @@ int main () {
     Simulation s;
 
     InitWindow(WIDTH, HEIGHT, "Particle Simulator");
-    SetTargetFPS(60);
+    // SetTargetFPS(60);
 
     while (!WindowShouldClose()){
+        if (IsMouseButtonPressed(0)) {
+            s.explode(GetMouseX(), GetMouseY());
+        }
         s.updateParticles(GetFrameTime());
         BeginDrawing();
             ClearBackground(BLACK);

@@ -12,11 +12,13 @@ void Particle::update(float dt) {
     Vector2 vel = getVelocity();
     prevPos = currentPos;
     
-    acceleration.y += GRAVITY;
+    // acceleration.y = GRAVITY;
 
     currentPos.x = currentPos.x + vel.x + acceleration.x * dt * dt;
     currentPos.y = currentPos.y + vel.y + acceleration.y * dt * dt;
-    
+
+    // acceleration = {0.0f, 0.0f};
+
     if (currentPos.x - radius <= 0) {
         currentPos.x = radius;
         prevPos.x = currentPos.x + vel.x * DAMPING;
