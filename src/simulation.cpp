@@ -3,7 +3,7 @@
 
 Simulation::Simulation() {
     int n = PARTICLE_COUNT;
-    int maxCol = 300;
+    int maxCol = 10;
     int offsetX = (WIDTH / 2) - (PARTICLE_RADIUS * 2 * maxCol) / 2;
     int offsetY = (HEIGHT / 2) - (PARTICLE_RADIUS * 2 * maxCol) / 2;
 
@@ -25,14 +25,26 @@ Simulation::Simulation() {
     }
 }
 
-void Simulation::updateParticles(float dt) {
+void Simulation::updateParticles(float dt, QuadTree &qt) {
     for (size_t i = 0; i < particleList.size(); i++) {
         Particle &p1 = particleList[i];
-        for (size_t j = i + 1; j < particleList.size(); j++) {
-            Particle &other = particleList[j];
+        qt.insert(p1);
+        // for (size_t j = i + 1; j < particleList.size(); j++) {
+        //     Particle &other = particleList[j];
+        //     if (p1.currentPos != other.currentPos) 
+        //     resolveCollisions(p1, other);
+        // }
+        // particleList[i].update(dt);
+    }
+    for (size_t i = 0; i < particleList.size(); i++) {
+        Particle &p1 = particleList[i];
+        std::vector<Particle> particles = qt.queryRange((Box){p1.currentPos.x, p1.currentPos.y, p1.radius});
+        for (size_t j = 0; j < particles.size(); j++) {
+            Particle &other = particles[j];
+            if (p1.currentPos != other.currentPos) 
             resolveCollisions(p1, other);
         }
-        particleList[i].update(dt);
+        p1.update(dt);
     }
 }
 

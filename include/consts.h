@@ -1,6 +1,6 @@
-#define WIDTH 800
-#define HEIGHT 600
+#define WIDTH 480
+#define HEIGHT 480
 //#define GRAVITY 9.8f
-#define DAMPING 0.6f
-#define PARTICLE_RADIUS 1.0f
-#define PARTICLE_COUNT 1000
+#define DAMPING 0.5f
+#define PARTICLE_RADIUS 5.0f
+#define PARTICLE_COUNT 100
