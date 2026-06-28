@@ -26,25 +26,16 @@ Simulation::Simulation() {
 }
 
 void Simulation::updateParticles(float dt, QuadTree &qt) {
-    for (size_t i = 0; i < particleList.size(); i++) {
+    for (int i = 0; i < 8; i++) {
+      for (size_t i = 0; i < particleList.size(); i++) {
         Particle &p1 = particleList[i];
-        qt.insert(p1);
-        // for (size_t j = i + 1; j < particleList.size(); j++) {
-        //     Particle &other = particleList[j];
-        //     if (p1.currentPos != other.currentPos) 
-        //     resolveCollisions(p1, other);
-        // }
-        // particleList[i].update(dt);
-    }
-    for (size_t i = 0; i < particleList.size(); i++) {
-        Particle &p1 = particleList[i];
-        std::vector<Particle> particles = qt.queryRange((Box){p1.currentPos.x, p1.currentPos.y, p1.radius});
-        for (size_t j = 0; j < particles.size(); j++) {
-            Particle &other = particles[j];
+        for (size_t j = 0; j < particleList.size(); j++) {
+            Particle &other = particleList[j];
             if (p1.currentPos != other.currentPos) 
             resolveCollisions(p1, other);
         }
         p1.update(dt);
+      }
     }
 }
 
@@ -58,9 +49,10 @@ void Simulation::explode(int mouseX, int mouseY) {
         if (distance < explodeRadius) {
             Vector2 n = {collisionAxis.x / distance, collisionAxis.y / distance};
             float overlap = PARTICLE_RADIUS * 2 - distance;
-
-            p1.currentPos.x += 0.5f * overlap * n.x;
-            p1.currentPos.y += 0.5f * overlap * n.y;
+            
+            float normalizedDistance = distance / explodeRadius;
+            p1.currentPos.x += n.x * (1 / normalizedDistance);
+            p1.currentPos.y += n.y * (1 / normalizedDistance);
         }
     }
 }
@@ -73,10 +65,10 @@ void Simulation::resolveCollisions(Particle &p1, Particle &p2) {
         Vector2 n = {collisionAxis.x / distance, collisionAxis.y / distance};
         float overlap = PARTICLE_RADIUS * 2 - distance;
 
-        p1.currentPos.x += 0.5f * overlap * n.x;
-        p1.currentPos.y += 0.5f * overlap * n.y;
-        p2.currentPos.x -= 0.5f * overlap * n.x;
-        p2.currentPos.y -= 0.5f * overlap * n.y;
+        p1.currentPos.x += 0.5f * overlap * n.x * DAMPING;
+        p1.currentPos.y += 0.5f * overlap * n.y * DAMPING;
+        p2.currentPos.x -= 0.5f * overlap * n.x * DAMPING;
+        p2.currentPos.y -= 0.5f * overlap * n.y * DAMPING;
     }
 }
 

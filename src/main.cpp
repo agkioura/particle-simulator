@@ -26,7 +26,7 @@ int main () {
         ClearBackground(BLACK);
             s.updateParticles(GetFrameTime(), qt);
             s.renderParticles();
-            // qt.show();
+            // qt.show(); 
             DrawFPS(10, 10);
             DrawText(pointCount.c_str(), 100, 10, 16, GREEN);
         EndDrawing();
