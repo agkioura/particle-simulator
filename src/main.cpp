@@ -5,9 +5,9 @@
 #include <raylib.h>
 #include <raymath.h>
 
-#include "include/simulation.h"
-#include "include/box.h"
-#include "include/qtree.h"
+#include "../include/simulation.h"
+#include "../include/box.h"
+#include "../include/qtree.h"
 
 int main () {
     Simulation s;
